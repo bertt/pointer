@@ -40,24 +40,39 @@ namespace pointer
         {
             this.longitude = e.Position.Longitude;
             this.latitude = e.Position.Latitude;
+            DoWork();
         }
 
         void Compass_ReadingChanged(object sender, CompassChangedEventArgs e)
         {
             var data = e.Reading;
             headingNorth = data.HeadingMagneticNorth;
-
-            Device.BeginInvokeOnMainThread(() =>
-            {
-                loc.Text = $"Position: {Math.Round(longitude,3)},{Math.Round(latitude,3)} Compass: {Math.Round(headingNorth,0)} ";
-            });
-
-            //  todo: 
-            // - calculate fov
-            // - get objects in fov
-            // - display objects
-
         }
 
+        private void DoWork()
+        {
+            if (longitude > 0 && latitude > 0)
+            {
+                var delta = 0.001;
+                var env = $"{longitude - delta},{latitude - delta},{longitude + delta},{latitude + delta}";
+                var features = Ngr.GetPanden(env);
+                Console.WriteLine(features.Count);
+
+                // todo: filter based on rotation device, or/and distance
+
+                var res = "";
+
+                foreach (var f in features)
+                {
+                    res += f.Properties["bouwjaar"] + ", ";
+                }
+
+
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    loc.Text = "hallo:" + res;
+                });
+            }
+        }
     }
 }
