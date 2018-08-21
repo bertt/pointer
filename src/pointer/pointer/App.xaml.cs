@@ -13,8 +13,7 @@ namespace pointer
 
             MainPage = new MainPage();
 
-            var c = new CompassTest();
-            c.ToggleCompass();
+
         }
 
         protected override void OnStart()
