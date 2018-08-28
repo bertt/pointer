@@ -11,7 +11,7 @@ namespace pointer
         {
             var client = new HttpClient();
 
-            var url = $"http://geodata.nationaalgeoregister.nl/bag/wfs?REQUEST=GetFeature&SERVICE=WFS&VERSION=2.0.0&TYPENAME=bag:pand&SRSNAME=EPSG:28992&cql_filter=(bbox(geometrie,{envelope},%27EPSG:4326%27))&outputformat=application/json";
+            var url = $"http://geodata.nationaalgeoregister.nl/bag/wfs?REQUEST=GetFeature&SERVICE=WFS&VERSION=2.0.0&TYPENAME=bag:pand&SRSNAME=EPSG:4326&cql_filter=(bbox(geometrie,{envelope},%27EPSG:4326%27))&outputformat=application/json";
 
             var response = client.GetAsync(url).Result;
             var responseString = response.Content.ReadAsStringAsync().Result;

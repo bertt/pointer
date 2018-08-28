@@ -4,11 +4,14 @@
              xmlns:local="clr-namespace:pointer"
              x:Class="pointer.MainPage">
 
-    <StackLayout>
-        <Label  
-           x:Name="loc" 
-           HorizontalOptions="Center"
-           VerticalOptions="CenterAndExpand" />
+    <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
+        <Label x:Name="afstand" />
+        <Label x:Name="identificatie" />
+        <Label x:Name="bouwjaar" />
+        <Label x:Name="status" />
+        <Label x:Name="gebruiksdoel" />
+        <Label x:Name="oppervlakte" />
+        <Label x:Name="verblijfsobjecten" />
     </StackLayout>
 
 </ContentPage>
