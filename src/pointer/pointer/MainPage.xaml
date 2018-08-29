@@ -1,17 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:pointer"
-             x:Class="pointer.MainPage">
+             x:Class="pointer.MainPage"
+             >
 
-    <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
-        <Label x:Name="afstand" />
-        <Label x:Name="identificatie" />
-        <Label x:Name="bouwjaar" />
-        <Label x:Name="status" />
-        <Label x:Name="gebruiksdoel" />
-        <Label x:Name="oppervlakte" />
-        <Label x:Name="verblijfsobjecten" />
+        <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
+            <Label x:Name="pointer"  FontSize="Large" Text="Bagwijzer"/>
+            <Label x:Name="tijd"  FontSize="Large"/>
+            <Label x:Name="richting"  FontSize="Large"/>
+            <Label x:Name="gps"  FontSize="Large"/>
+            <Label x:Name="afstand"  FontSize="Large"/>
+            <Label x:Name="identificatie"  FontSize="Large" />
+            <Label x:Name="bouwjaar"  FontSize="Large"/>
+            <Label x:Name="status"  FontSize="Large"/>
+            <Label x:Name="gebruiksdoel"  FontSize="Large"/>
+            <Label x:Name="oppervlakte"  FontSize="Large"/>
+            <Label x:Name="verblijfsobjecten"  FontSize="Large"/>
+
+            <Button Text="Refresh" Clicked="OnButtonClicked" />
     </StackLayout>
-
 </ContentPage>
