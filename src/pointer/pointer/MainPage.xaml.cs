@@ -131,7 +131,13 @@ namespace pointer
 
                         if (nearestPand != null)
                         {
-                            identificatie.Text = "identificatie: " + nearestPand.Properties["identificatie"];
+                            var v = Ngr.GetVerblijfsObjecten(nearestPand.Properties["identificatie"].ToString());
+                            if (v.Count > 0)
+                            {
+                                var adres = v[0].Properties["openbare_ruimte"] + " " + v[0].Properties["huisnummer"] + " " + v[0].Properties["woonplaats"];
+                                identificatie.Text = adres;
+                            }
+                            //identificatie.Text = "identificatie: " + nearestPand.Properties["identificatie"];
                             bouwjaar.Text = "bouwjaar: " + nearestPand.Properties["bouwjaar"];
                             status.Text = "status: " + nearestPand.Properties["status"];
                             gebruiksdoel.Text = "gebruiksdoel: " + nearestPand.Properties["gebruiksdoel"];
