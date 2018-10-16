@@ -9,12 +9,14 @@
             <Label x:Name="tijd"  FontSize="Large"/>
             <Label x:Name="richting"  FontSize="Large"/>
             <Label x:Name="gps"  FontSize="Large"/>
+            <Label x:Name="gpsaccuracy"  FontSize="Large"/>
             <Label x:Name="afstand"  FontSize="Large"/>
             <Label x:Name="identificatie"  FontSize="Large" />
             <Label x:Name="bouwjaar"  FontSize="Large"/>
             <Label x:Name="status"  FontSize="Large"/>
             <Label x:Name="gebruiksdoel"  FontSize="Large"/>
             <Label x:Name="oppervlakte"  FontSize="Large"/>
+            <Label x:Name="adres"  FontSize="Large"/>
             <Label x:Name="verblijfsobjecten"  FontSize="Large"/>
 
             <Button Text="Refresh" Clicked="OnButtonClicked" />

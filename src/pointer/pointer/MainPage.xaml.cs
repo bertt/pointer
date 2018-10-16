@@ -1,7 +1,4 @@
-﻿using GeoAPI.Geometries;
-using GeoJSON.Net.Feature;
-using NetTopologySuite.IO;
-using Newtonsoft.Json;
+﻿using GeoJSON.Net.Feature;
 using Plugin.Geolocator;
 using Plugin.Permissions.Abstractions;
 using System;
@@ -16,6 +13,7 @@ namespace pointer
         private double longitude;
         private double latitude;
         private double minimumDistance = 10;
+        private double accuracy;
 
         public MainPage()
         {
@@ -43,6 +41,7 @@ namespace pointer
 
         private void Locator_PositionChanged(object sender, Plugin.Geolocator.Abstractions.PositionEventArgs e)
         {
+            accuracy = e.Position.Accuracy;
             longitude = e.Position.Longitude;
             latitude = e.Position.Latitude;
         }
@@ -66,64 +65,31 @@ namespace pointer
                 richting.Text = "richting: " + Math.Round(headingNorth, 0) + "°";
             });
 
-            if (longitude > 0 && latitude > 0)
+            if (longitude > 0 && latitude > 0 && Math.Round(accuracy, 0)<20)
             {
                 Device.BeginInvokeOnMainThread(() =>
                 {
                     gps.Text = "gps: " + Math.Round(longitude,4) + ", " + Math.Round(latitude,4);
+                    gpsaccuracy.Text="accuracy: " + Math.Round(accuracy,0) + "m";
                 });
-
-                var delta = 0.001;
-                var env = $"{longitude - delta},{latitude - delta},{longitude + delta},{latitude + delta}";
 
                 var current = Connectivity.NetworkAccess;
 
                 if (current == NetworkAccess.Internet)
                 {
-                    var features = Ngr.GetPanden(env);
-
                     var loc1 = new NetTopologySuite.Geometries.Point(longitude, latitude);
-
                     // create a line
-                    var c2 = new Coordinate(longitude + Math.Sin(headingNorth) * 0.01, latitude + Math.Cos(headingNorth) * 0.01);
-                    var c1 = new Coordinate(longitude, latitude);
+                    var line = LineCreator.GetLine(longitude, latitude, headingNorth);
+                    var env = line.Envelope;
 
-                    var line = new NetTopologySuite.Geometries.LineString(new Coordinate[] { c1, c2 });
+                    var env1 = $"{env.Coordinates[0].X}, {env.Coordinates[0].Y}, {env.Coordinates[2].X}, {env.Coordinates[2].Y}";
+
+                    var features = Ngr.GetPanden(env1);
 
                     Feature nearestPand = null;
-                    double distanceNearest = Double.MaxValue;
+                    double distanceNearest;
 
-                    foreach (var pand in features)
-                    {
-                        var geom = pand.Geometry;
-                        var geomtype = geom.Type;
-                        var geomstring = JsonConvert.SerializeObject(geom);
-                        var reader = new GeoJsonReader();
-                        // todo: check for multipolygon versus polygon
-
-                        IGeometry pandGeom;
-                        if (geomtype == GeoJSON.Net.GeoJSONObjectType.MultiPolygon)
-                        {
-                            pandGeom = reader.Read<NetTopologySuite.Geometries.MultiPolygon>(geomstring);
-                        }
-                        else
-                        {
-                            pandGeom = reader.Read<NetTopologySuite.Geometries.Polygon>(geomstring);
-                        }
-
-                        var intersects = pandGeom.Intersects(line);
-
-                        if (intersects)
-                        {
-                            var dist = loc1.Distance(pandGeom);
-
-                            if (dist < distanceNearest && dist > minimumDistance / 111000)
-                            {
-                                distanceNearest = dist;
-                                nearestPand = pand;
-                            }
-                        }
-                    }
+                    (nearestPand,distanceNearest) = PandSearch.GetNearestPand(features, loc1, line);
 
                     Device.BeginInvokeOnMainThread(() =>
                     {
@@ -134,10 +100,10 @@ namespace pointer
                             var v = Ngr.GetVerblijfsObjecten(nearestPand.Properties["identificatie"].ToString());
                             if (v.Count > 0)
                             {
-                                var adres = v[0].Properties["openbare_ruimte"] + " " + v[0].Properties["huisnummer"] + " " + v[0].Properties["woonplaats"];
-                                identificatie.Text = adres;
+                                var adres1 = v[0].Properties["openbare_ruimte"] + " " + v[0].Properties["huisnummer"] + " " + v[0].Properties["woonplaats"];
+                                adres.Text = adres1;
                             }
-                            //identificatie.Text = "identificatie: " + nearestPand.Properties["identificatie"];
+                            identificatie.Text = "identificatie: " + nearestPand.Properties["identificatie"];
                             bouwjaar.Text = "bouwjaar: " + nearestPand.Properties["bouwjaar"];
                             status.Text = "status: " + nearestPand.Properties["status"];
                             gebruiksdoel.Text = "gebruiksdoel: " + nearestPand.Properties["gebruiksdoel"];
@@ -146,9 +112,10 @@ namespace pointer
                         }
                         else
                         {
-                            afstand.Text = "helaas, geen pand gevonden";
+                            afstand.Text = "helaas, geen pand gevonden binnen 100m";
                             identificatie.Text = "";
                             bouwjaar.Text = "";
+                            adres.Text = "";
                             status.Text = "";
                             gebruiksdoel.Text = "";
                             oppervlakte.Text = "";
@@ -166,8 +133,9 @@ namespace pointer
             }
             else
             {
-                afstand.Text = "gps niet beschikbaar :-(";
+                afstand.Text = "geen nauwkeurige (<10m) gps beschikbaar. nauwkeurigheid:" + Math.Round(accuracy,0) + "m";
             }
         }
+
     }
 }
