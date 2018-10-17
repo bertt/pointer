@@ -4,21 +4,47 @@
              x:Class="pointer.MainPage"
              >
 
-        <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
-            <Label x:Name="pointer"  FontSize="Large" Text="Bagwijzer"/>
-            <Label x:Name="tijd"  FontSize="Large"/>
-            <Label x:Name="richting"  FontSize="Large"/>
-            <Label x:Name="gps"  FontSize="Large"/>
-            <Label x:Name="gpsaccuracy"  FontSize="Large"/>
-            <Label x:Name="afstand"  FontSize="Large"/>
-            <Label x:Name="identificatie"  FontSize="Large" />
-            <Label x:Name="bouwjaar"  FontSize="Large"/>
-            <Label x:Name="status"  FontSize="Large"/>
-            <Label x:Name="gebruiksdoel"  FontSize="Large"/>
-            <Label x:Name="oppervlakte"  FontSize="Large"/>
-            <Label x:Name="adres"  FontSize="Large"/>
-            <Label x:Name="verblijfsobjecten"  FontSize="Large"/>
+    <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
+        <Label x:Name="pointer"  FontSize="Large" Text="Bagwijzer"/>
+        <Label Text="Input"/>
+        <Grid x:Name="gpsgrid">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions >
+            <Label Grid.Row="0" Grid.Column="0" Text="Tijd"/>
+            <Label Grid.Row="0" Grid.Column="1" x:Name="tijd" Text="-"/>
+            <Label Grid.Row="1" Grid.Column="0" Text="Richting"/>
+            <Label Grid.Row="1" Grid.Column="1" x:Name="richting" Text="-"/>
+            <Label Grid.Row="2" Grid.Column="0" Text="Gps"/>
+            <Label Grid.Row="2" Grid.Column="1" x:Name="gps" Text="-"/>
+            <Label Grid.Row="3" Grid.Column="0" Text="Gps accuracy"/>
+            <Label Grid.Row="3" Grid.Column="1" x:Name="gpsaccuracy" Text="-"/>
+        </Grid>
 
-            <Button Text="Refresh" Clicked="OnButtonClicked" />
+        <Label Text="Pand" x:Name="pandtext"/>
+        <Grid x:Name="pandgrid">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions >
+            <Label Grid.Row="0" Grid.Column="0" Text="Afstand"/>
+            <Label Grid.Row="0" Grid.Column="1" x:Name="afstand" Text="-"/>
+            <Label Grid.Row="1" Grid.Column="0" Text="Id"/>
+            <Label Grid.Row="1" Grid.Column="1" x:Name="identificatie" Text="-"/>
+            <Label Grid.Row="2" Grid.Column="0" Text="Bouwjaar"/>
+            <Label Grid.Row="2" Grid.Column="1" x:Name="bouwjaar" Text="-"/>
+            <Label Grid.Row="3" Grid.Column="0" Text="Status"/>
+            <Label Grid.Row="3" Grid.Column="1" x:Name="status" Text="-"/>
+            <Label Grid.Row="4" Grid.Column="0" Text="Gebruiksdoel"/>
+            <Label Grid.Row="4" Grid.Column="1" x:Name="gebruiksdoel" Text="-"/>
+            <Label Grid.Row="5" Grid.Column="0" Text="Oppervlakte"/>
+            <Label Grid.Row="5" Grid.Column="1" x:Name="oppervlakte" Text="-"/>
+            <Label Grid.Row="6" Grid.Column="0" Text="Adres"/>
+            <Label Grid.Row="6" Grid.Column="1" x:Name="adres" Text="-"/>
+            <Label Grid.Row="7" Grid.Column="0" Text="Verblijfsobjecten"/>
+            <Label Grid.Row="7" Grid.Column="1" x:Name="verblijfsobjecten" Text="-"/>
+        </Grid>
+        <Button Text="Refresh" Clicked="OnButtonClicked" />
     </StackLayout>
 </ContentPage>

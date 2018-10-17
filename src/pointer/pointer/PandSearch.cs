@@ -6,9 +6,7 @@ namespace pointer
 {
     public static class PandSearch
     {
-        private static double minimumDistance = 10;
-
-        public static (Feature pand, double distance) GetNearestPand(List<Feature> panden, NetTopologySuite.Geometries.Point loc1, NetTopologySuite.Geometries.LineString line)
+        public static (Feature pand, double distance) GetNearestPand(List<Feature> panden, NetTopologySuite.Geometries.Point loc1, NetTopologySuite.Geometries.LineString line, double MinimumDistance)
         {
             Feature nearestPand = null;
             double distanceNearest = Double.MaxValue;
@@ -23,7 +21,7 @@ namespace pointer
                 {
                     var dist = loc1.Distance(pandGeom);
 
-                    if (dist < distanceNearest && dist > minimumDistance / 111000)
+                    if (dist < distanceNearest && dist > MinimumDistance / 111000)
                     {
                         distanceNearest = dist;
                         nearestPand = pand;
